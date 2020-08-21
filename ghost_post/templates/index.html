@@ -1,0 +1,20 @@
+{% extends 'main.html' %}
+{% block content %}
+{% for post in posts %}
+<h2>{{ post.content }}</h2>
+{% if post.is_roast == True %}
+<p>ROAST</p>
+{% else %}
+<p>BOAST</p>
+{% endif %}
+
+
+<a href="{% url 'upvote_page' post.id %}" class="btn btn-primary btn-sm active" role="button"
+    aria-pressed="true">UPVOTE</a>
+<a href="{% url 'downvote_page' post.id %}" class="btn btn-primary btn-sm active" role="button"
+    aria-pressed="true">DOWNVOTE</a>
+<p>{{ post.total_votes }}</p>
+<p>{{ post.date_created }}</p>
+
+{% endfor %}
+{% endblock %}
