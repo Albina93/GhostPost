@@ -1,10 +1,15 @@
 {% extends 'main.html' %}
 {% block content %}
+{% if post %}
 
+<h3>Hey this is your secret key <-----> <a href="{% url 'detail_page' post.sec_key %}">{{ post.sec_key }}</a></h3>
+<a href="/">HOMEPAGE</a>
+
+{% else %}
 <form action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input class="btn btn-primary" type="submit" value="Submit">
 </form>
-
+{% endif %}
 {% endblock %}

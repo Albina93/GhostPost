@@ -1,6 +1,8 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, redirect
 from .models import Post
 from .forms import AddPost
+import random
+import string
 
 
 def index(request):
@@ -13,11 +15,14 @@ def createpost_view(request):
         form = AddPost(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            Post.objects.create(
+            secret_key = "".join(random.choices(
+                string.ascii_letters + string.digits, k=6))
+            post = Post.objects.create(
                 is_roast=data.get('is_roast'),
-                content=data.get('content')
+                content=data.get('content'),
+                sec_key=secret_key
             )
-            return HttpResponseRedirect(reverse("homepage"))
+            return render(request, 'createpost.html', {'post': post})
     form = AddPost()
     return render(request, 'createpost.html', {'form': form})
 
@@ -55,5 +60,11 @@ def downvote_view(request, downvote_id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+def detail_view(request, sec_key):
+    post = Post.objects.get(sec_key=sec_key)
+    return render(request, 'detail.html', {'post': post})
+
+
 def delete_view(request, post_id):
-    return HttpResponseRedirect(reverse("homepage"))
+    removed = Post.objects.filter(id=post_id).delete()
+    return render(request, 'detail.html', {'removed': removed})

@@ -10,6 +10,7 @@ class Post(models.Model):
     upvote = models.IntegerField(default=0)
     downvote = models.IntegerField(default=0)
     date_created = models.DateTimeField(default=timezone.now)
+    sec_key = models.CharField(max_length=8)
 
     def __str__(self):
         return self.content

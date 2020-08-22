@@ -3,8 +3,4 @@ from .models import Post
 # Register your models here.
 
 
-# class PostAdmin(admin.ModelAdmin):
-#     list_display = ('content', )
-
-
 admin.site.register(Post)
